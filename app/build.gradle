@@ -1,0 +1,115 @@
+apply plugin: 'com.android.application'
+
+def getProperty(String filename, String propName) {
+    def propsFile = rootProject.file(filename)
+    if (propsFile.exists()) {
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        if (props[propName] != null) {
+            return props[propName]
+        } else {
+            print("No such property " + propName + " in file " + filename);
+        }
+    } else {
+        print(filename + " does not exist!")
+    }
+}
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "dau.themovieapp"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        buildConfigField "String", "TMDB_API_KEY", "\"${getProperty("local.properties", "tmdb.api.key")}\""
+        buildConfigField "String", "TMDB_BASE_URL", "\"http://api.themoviedb.org/3/\""
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }
+}
+
+ext {
+    supportLibVersion = '27.1.1'
+    okhttpVersion = '3.9.0'
+    daggerVersion = '2.5'
+    espressoVersion = '3.0.2'
+    rxJava = '2.1.8'
+    rxAndroid = '2.0.1'
+    rxBinding = '2.1.1'
+    butterKnife = '8.8.1'
+    retrofit = '2.3.0'
+    picasso = '2.5.2'
+    guava = '22.0'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Support
+    implementation "com.android.support:design:${supportLibVersion}"
+    implementation "com.android.support:support-v4:${supportLibVersion}"
+    implementation "com.android.support:support-annotations:${supportLibVersion}"
+    implementation "com.android.support:palette-v7:${supportLibVersion}"
+    implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
+    implementation "com.android.support.test.espresso:espresso-idling-resource:${espressoVersion}"
+
+    // Rx
+    implementation "io.reactivex.rxjava2:rxjava:${rxJava}"
+    implementation "io.reactivex.rxjava2:rxandroid:${rxAndroid}"
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:${rxBinding}"
+
+    // Network
+    implementation "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"
+
+    // ButterKnife
+    implementation "com.jakewharton:butterknife:${butterKnife}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnife}"
+
+    // Dependency Injection
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+    implementation "com.google.dagger:dagger:${daggerVersion}"
+
+    // Retrofit 2
+    implementation "com.squareup.retrofit2:retrofit:${retrofit}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofit}"
+
+    // Picasso
+    implementation "com.squareup.picasso:picasso:${picasso}"
+
+    // Guava
+    implementation "com.google.guava:guava:${guava}"
+
+    // Tests
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.13.0'
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:${espressoVersion}", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:${espressoVersion}") {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+}

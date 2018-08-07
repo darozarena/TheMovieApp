@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Padding -->
+    <dimen name="padding_8">8dp</dimen>
+
+    <!-- Margin -->
+    <dimen name="margin_8">8dp</dimen>
+
+    <!-- TextSize -->
+    <dimen name="text_size_24">24sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+</resources>

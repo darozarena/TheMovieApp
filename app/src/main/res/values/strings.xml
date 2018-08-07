@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TheMovieApp</string>
+    <string name="action_search">Search</string>
+    <string name="empty_search">No se encontraron películas</string>
+</resources>
